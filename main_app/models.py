@@ -9,3 +9,6 @@ class Mineral(models.Model):
     colour = models.CharField(max_length=100)
     hardness = models.FloatField(validators=[MinValueValidator(0.0),MaxValueValidator(10.0)])
     magnetic = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name

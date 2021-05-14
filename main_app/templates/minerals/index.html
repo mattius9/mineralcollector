@@ -5,18 +5,21 @@
 
 {% for mineral in minerals %}
   <div class="card">
-    <div class="card-content">
-        <span class="card-title">
-            {{ mineral.name }}
-            {% if mineral.magnetic %}
-            (Magnetic)
-            {% endif %}
-        </span>
-      <p>Class: {{ mineral.m_class }}</p>
-      <p>Colour: {{ mineral.colour }}</p>
-      <p>Hardness: {{ mineral.hardness }}</p>
+    <a href=" {% url 'detail' mineral.id %}">
+        <div class="card-content">
+            <span class="card-title">
+                {{ mineral.name }}
+                {% if mineral.magnetic %}
+                (Magnetic)
+                {% endif %}
+            </span>
+            <p>Class: {{ mineral.m_class }}</p>
+            <p>Colour: {{ mineral.colour }}</p>
+            <p>Hardness: {{ mineral.hardness }}</p>
+        
+        </div>
+    </a>
     
-    </div>
   </div>
 {% endfor %}
 
