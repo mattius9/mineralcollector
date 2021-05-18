@@ -1,6 +1,21 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from .models import Mineral
+
+class MineralCreate(CreateView):
+    model = Mineral
+    fields = '__all__'
+    # fields = ['name', 'm_class', 'colour', 'hardness', 'magnetic']
+    # success_url = '/minerals/'
+
+class MineralUpdate(UpdateView):
+    model = Mineral
+    fields = ['m_class', 'colour', 'hardness', 'magnetic']
+
+class MineralDelete(DeleteView):
+    model = Mineral
+    success_url = '/minerals/'
+
 
 
 
