@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import CreateView, UpdateView, DeleteView
 from .models import Mineral
+from .forms import ViewingForm
 
 class MineralCreate(CreateView):
     model = Mineral
@@ -33,4 +34,15 @@ def minerals_index(request):
 
 def minerals_detail(request, mineral_id):
     mineral = Mineral.objects.get(id=mineral_id)
-    return render(request, 'minerals/detail.html', {'mineral':mineral})
+    viewing_form = ViewingForm()
+    return render(request, 'minerals/detail.html', {
+        'mineral':mineral, 'viewing_form': viewing_form
+    })
+
+def add_viewing(request, mineral_id):
+    form = ViewingForm(request.POST)
+    if form.is_valid():
+        new_viewing = form.save(commit=False)
+        new_viewing.mineral_id = mineral_id
+        new_viewing.save()
+    return redirect('detail', mineral_id=mineral_id)

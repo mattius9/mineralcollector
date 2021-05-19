@@ -3,6 +3,12 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 
 # Create your models here.
+LEVELS = (
+    ('L','Low Risk' ),
+    ('R', 'Restricted'),
+    ('T', 'Top Secret')
+)
+
 
 class Mineral(models.Model):
     name = models.CharField(max_length=100)
@@ -16,3 +22,20 @@ class Mineral(models.Model):
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'mineral_id': self.id})
+
+class Viewing(models.Model):
+    date = models.DateField('viewing date')
+    visitor = models.CharField(max_length=50)
+    level = models.CharField(
+        max_length=1,
+            choices=LEVELS,
+            default=LEVELS[0][0]
+    )
+    
+    mineral = models.ForeignKey(Mineral, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.visitor} - {self.get_level_display()} on {self.date}"
+
+    class Meta:
+        ordering = ['-date']

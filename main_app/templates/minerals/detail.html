@@ -3,22 +3,58 @@
 
 <h1>Mineral Details</h1>
 
-<div class="card">
-    <div class="card-content">
-        <span class="card-title">
-            {{ mineral.name }}
-            {% if mineral.magnetic %}
-            (Magnetic)
-            {% endif %}
-        </span>
-        <p>Class: {{ mineral.m_class }}</p>
-        <p>Colour: {{ mineral.colour }}</p>
-        <p>Hardness: {{ mineral.hardness }}</p>
+<div class="row">
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">
+                    {{ mineral.name }}
+                    {% if mineral.magnetic %}
+                    (Magnetic)
+                    {% endif %}
+                </span>
+                <p>Class: {{ mineral.m_class }}</p>
+                <p>Colour: {{ mineral.colour }}</p>
+                <p>Hardness: {{ mineral.hardness }}</p>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'minerals_update' mineral.id %}">Edit</a>
+                <a href="{% url 'minerals_delete' mineral.id %}">Delete</a>
+            </div>
+        </div>
     </div>
-    <div class="card-action">
-        <a href="{% url 'minerals_update' mineral.id %}">Edit</a>
-        <a href="{% url 'minerals_delete' mineral.id %}">Delete</a>
+    <div class="col s6">
+        <form action ="{% url 'add_viewing' mineral.id %}" method="post">
+            {% csrf_token %}
+            {{viewing_form.as_p}}
+            <input type="submit" class="btn" value="Add Viewing"/>
+        </form>
+        <table class="striped">
+            <thead>
+                <tr><th>Date</th><th>Visitor</th><th>Security Level</th></tr>
+            </thead>
+            <tbody>
+                {% for viewing in mineral.viewing_set.all %}
+                    <tr>
+                        <td>{{viewing.date}}</td>
+                        <td>{{viewing.visitor}}</td>
+                        <td>{{viewing.get_level_display}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 
+<script>
+    var dateEl = document.getElementById('id_date');
+    M.Datepicker.init(dateEl, {
+        format: 'yyyy-mm-dd',
+        defaultDate: new Date(),
+        setDefaultDate: true,
+        autoClose: true
+    });
+    var selectEl = document.getElementById('id_level');
+    M.FormSelect.init(selectEl);
+</script>
 {% endblock %}

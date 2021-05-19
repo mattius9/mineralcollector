@@ -11,4 +11,6 @@ urlpatterns = [
     path('minerals/create', views.MineralCreate.as_view(), name='minerals_create'),
     path('minerals/<int:pk>/update', views.MineralUpdate.as_view(), name='minerals_update'),
     path('minerals/<int:pk>/delete', views.MineralDelete.as_view(), name='minerals_delete'),
+    path('minerals/<int:mineral_id>/add_viewing/', views.add_viewing, name='add_viewing'),
+    
 ]
