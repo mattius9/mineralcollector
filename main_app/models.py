@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 # Create your models here.
 LEVELS = (
@@ -9,13 +10,23 @@ LEVELS = (
     ('T', 'Top Secret')
 )
 
+class Tool(models.Model):
+    name = models.CharField(max_length=50)
+    brand = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('tools_detail', kwargs={'pk': self.id})
 
 class Mineral(models.Model):
     name = models.CharField(max_length=100)
     m_class = models.CharField(max_length=100)
     colour = models.CharField(max_length=100)
     hardness = models.FloatField(validators=[MinValueValidator(0.0),MaxValueValidator(10.0)])
-    magnetic = models.BooleanField(default=False)
+    tools = models.ManyToManyField(Tool)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

@@ -20,8 +20,17 @@
         </ul>
         <ul class="right">
           <li><a href="{% url 'about' %}">About</a></li>
-          <li><a href="{% url 'minerals_create' %}">Add a Mineral</a></li>
-          <li><a href="{% url 'index' %}">View All My Minerals</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'tools_create' %}">Add a Tool</a></li>
+            <li><a href="{% url 'tools_index' %}">View All Tools</a></li>
+            <li><a href="{% url 'minerals_create' %}">Add a Mineral</a></li>
+            <li><a href="{% url 'index' %}">View All My Minerals</a></li>
+            <li><a href="{% url 'logout' %}">Log Out</a></li>
+            <li><p>{{user.username}}</p></li>
+          {% else %}
+            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Log In</a></li>
+          {% endif %}
         </ul>
       </div>
     </nav>
